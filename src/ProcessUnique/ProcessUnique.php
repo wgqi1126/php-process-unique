@@ -109,7 +109,7 @@ class ProcessUnique
     {
         $os = strtolower(PHP_OS);
         if (strpos($os, 'win') === 0) { // windows
-            return intval(trim(shell_exec("TASKLIST /FI \"PID eq {$pid}\""))) > 2;
+            return intval(explode("\n", trim(preg_replace('%[\r\n]+%', "\n", shell_exec("TASKLIST /FI \"PID eq {$pid}\""))))) > 2;
         } else { // other
             return intval(trim(shell_exec("ps -p {$pid} | wc -l"))) > 1;
         }
